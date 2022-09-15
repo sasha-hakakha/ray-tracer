@@ -1,46 +1,32 @@
 /*
- * AFAIK, we will only need vec3 and maybe vec4,
- * and only square matrix multiplication. But this is easy to
- * change.
+ * I'm not using structs for vecs and matricies,
+ * a matrix will be an array of arrays
  */
 
 /* TODO:
- I'm only doing 4x4 matrix multiplication if I am sure that I need to
 */
-struct vec3{
-    float x;
-    float y;
-    float z;
-};
 
-struct vec4{
-    float x;
-    float y;
-    float z;
-    float w
-};
 
-struct m3{
-    vec3 r1;
-    vec3 r2;
-    vec3 r3;
-};
-
-struct m4{
-    vec4 r1;
-    vec4 r2;
-    vec4 r3; 
-    vec4 r4;
-};
-
-m3 mm3 (m4 one, m4 two){
-    m3 result;
-    // top left, one top row by two left col
-    result.r1.x = one.r1.x * two.r1.x + one.r1.y * two.r2.x + one.r1.z * two.r3.x;
-    // top mid, one top row by two middle col
-    result.r1.y = one.r1.x * two.r1.y + one.r1.y * two.r2.y + one.r1.z + two.r3.y;
-    // top right, one top row by two right col
-    result.r1.z = one.r1.x * two.r1.z * one.r1.y * two.r2.z + one.r1.z + two.r3.z;
-    mid left, one middle row by top left row
-
+// matrix multiplication
+void m3m(int mat1[3][3], int mat3[3][3], int(&result)[3][3]) {
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            result[i][j] = 0;
+            for (int k = 0; k < 3; k++) {
+                result[i][j] += mat1[i][k] * mat3[k][j];
+            }
+        }
+    }
 }
+void m4m(int mat1[4][4], int mat2[4][4] , int(&result)[4][4]) {
+ 
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            result[i][j] = 0;
+            for (int k = 0; k < 4; k++) {
+                result[i][j] += mat1[i][k] * mat2[k][j];
+            } 
+        }
+    }
+}
+
