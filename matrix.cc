@@ -8,7 +8,20 @@
 
 
 // matrix multiplication
-void m3m(int mat1[3][3], int mat3[3][3], int(&result)[3][3]) {
+struct vec3{
+    float x;
+    float y;
+    float z;
+};
+
+struct vec4{
+    float x;
+    float y;
+    float z;
+    float w;
+};
+ 
+void m3m(float mat1[3][3], float mat3[3][3], float(&result)[3][3]) {
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             result[i][j] = 0;
@@ -18,8 +31,7 @@ void m3m(int mat1[3][3], int mat3[3][3], int(&result)[3][3]) {
         }
     }
 }
-void m4m(int mat1[4][4], int mat2[4][4] , int(&result)[4][4]) {
- 
+void m4m(float mat1[4][4], float mat2[4][4] , float(&result)[4][4]) {
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
             result[i][j] = 0;
@@ -30,3 +42,6 @@ void m4m(int mat1[4][4], int mat2[4][4] , int(&result)[4][4]) {
     }
 }
 
+int main(void){
+    return 0;
+}
