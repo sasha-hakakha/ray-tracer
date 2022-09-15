@@ -12,14 +12,14 @@ struct vec3{
     float x;
     float y;
     float z;
-};
+}point;
 
 struct vec4{
     float x;
     float y;
     float z;
     float w;
-};
+}point_w;
  
 void m3m(float mat1[3][3], float mat3[3][3], float(&result)[3][3]) {
     for (int i = 0; i < 3; i++) {
