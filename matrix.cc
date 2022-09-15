@@ -41,5 +41,6 @@ m3 mm3 (m4 one, m4 two){
     result.r1.y = one.r1.x * two.r1.y + one.r1.y * two.r2.y + one.r1.z + two.r3.y;
     // top right, one top row by two right col
     result.r1.z = one.r1.x * two.r1.z * one.r1.y * two.r2.z + one.r1.z + two.r3.z;
-    // mid left
+    mid left, one middle row by top left row
+
 }
