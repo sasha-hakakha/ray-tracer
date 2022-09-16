@@ -1,26 +1,101 @@
 /*
- * I'm not using structs for vecs and matricies,
- * a matrix will be an array of arrays
+ * I'm not using structs for matricies,
+ * a matrix will be an array of arrays. Points are
+ * vecs lol.
  */
 
 /* TODO:
 */
 
-
+#include <iostream>
+#include <cmath>
 // matrix multiplication
 struct vec3{
     float x;
     float y;
     float z;
-}point;
+};
 
 struct vec4{
     float x;
     float y;
     float z;
     float w;
-}point_w;
- 
+};
+
+struct ray{
+    vec3 p;
+    vec3 v;
+};
+
+struct plane{
+    vec3 coord;
+    vec3 norm;
+};
+
+float dot_v3v3(vec3 one, vec3 two){
+    return one.x * two.x + one.y * two.y + one.z * two.z;
+}
+
+vec3 cross_v3v3(vec3 one, vec3 two){
+    vec3 result;
+    result.x = one.y * two.z - one.z * two.y;
+    result.y = one.x * two.z - one.z * two.x;
+    result.z = one.x * two.y - one.y * two.x;
+    return result;
+}
+vec3 sub_v3v3(vec3 one, vec3 two){
+    vec3 result;
+    result.x = one.x - two.x;
+    result.y = one.y - two.y;
+    result.z = one.z - two.z;
+    return result;
+}
+
+vec3 add_v3v3(vec3 one, vec3 two){
+    vec3 result;
+    result.x = one.x - two.x;
+    result.y = one.y - two.y;
+    result.z = one.z - two.z;
+    return result;
+}
+
+vec3 mul_v3fl(vec3 v, float f){
+    vec3 result;
+    result.x = v.x * f;
+    result.y = v.y * f;
+    result.z = v.z * f;
+    return result;
+}
+
+plane points_to_plane(vec3 one, vec3 two, vec3 three){
+    plane result;
+    result.coord = cross_v3v3(sub_v3v3(two, one), sub_v3v3(three, one));
+    result.coord = one;
+    return result;
+}
+
+vec3 ray_isect_plane(ray r, plane pl){
+    // ignoring parallelism here
+    float epsilon = std::pow(10, -6);
+    float dot = std::abs(dot_v3v3(pl.norm, r.v));
+
+    vec3 w = sub_v3v3(r.p, pl.coord);
+    float fac = -1 * dot_v3v3(pl.norm, w) / dot;
+    vec3 u = mul_v3fl(r.v, fac);
+    return add_v3v3(r.p, u);
+}
+float dist_v3v3(vec3 a, vec3 b){
+    return std::sqrt(std::pow((a.x-b.x),2) + std::pow((a.y-b.y),2) + std::pow((a.z - b.z), 2));
+}
+bool p_inside_tri(vec3 p, vec3 v1, vec3 v2, vec3 v3){
+    float d1 = dist_v3v3(p, v1);
+    float d2 = dist_v3v3(p, v2);
+    float d3 = dist_v3v3(p, v3);
+    float total = d1 + d2 + d3;
+    return (d1 > 0 && d2 > 0 && d3 > 0 && d1 < total && d2 < total && d3 < total);
+}
+
 void m3m(float mat1[3][3], float mat3[3][3], float(&result)[3][3]) {
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
