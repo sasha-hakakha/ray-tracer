@@ -24,70 +24,76 @@ struct vec4{
 };
 
 struct ray{
-    vec3 p;
-    vec3 v;
+    vec3* p;
+    vec3* v;
 };
 
 struct plane{
-    vec3 coord;
-    vec3 norm;
+    vec3* coord;
+    vec3* norm;
 };
 
-float dot_v3v3(vec3 one, vec3 two){
-    return one.x * two.x + one.y * two.y + one.z * two.z;
+void dot_v3v3(vec3* one, vec3* two, float &result){
+    result = one->x * two->x + one->y * two->y + one->z * two->z;
 }
 
-vec3 cross_v3v3(vec3 one, vec3 two){
-    vec3 result;
-    result.x = one.y * two.z - one.z * two.y;
-    result.y = one.x * two.z - one.z * two.x;
-    result.z = one.x * two.y - one.y * two.x;
-    return result;
+void cross_v3v3(vec3* one, vec3* two, vec3 &result){
+    result.x = one->y * two->z - one->z * two->y;
+    result.y = one->x * two->z - one->z * two->x;
+    result.z = one->x * two->y - one->y * two->x;
 }
-vec3 sub_v3v3(vec3 one, vec3 two){
-    vec3 result;
-    result.x = one.x - two.x;
-    result.y = one.y - two.y;
-    result.z = one.z - two.z;
-    return result;
+void sub_v3v3(vec3* one, vec3* two, vec3 &result){
+    result.x = one->x - two->x;
+    result.y = one->y - two->y;
+    result.z = one->z - two->z;
 }
 
-vec3 add_v3v3(vec3 one, vec3 two){
-    vec3 result;
-    result.x = one.x - two.x;
-    result.y = one.y - two.y;
-    result.z = one.z - two.z;
-    return result;
+void add_v3v3(vec3* one, vec3* two, vec3 &result){
+    result.x = one->x - two->x;
+    result.y = one->y - two->y;
+    result.z = one->z - two->z;
 }
 
-vec3 mul_v3fl(vec3 v, float f){
-    vec3 result;
-    result.x = v.x * f;
-    result.y = v.y * f;
-    result.z = v.z * f;
-    return result;
+void mul_v3fl(vec3* v, float f, vec3 &result){
+    result.x = v->x * f;
+    result.y = v->y * f;
+    result.z = v->z * f;
 }
 
-plane points_to_plane(vec3 one, vec3 two, vec3 three){
-    plane result;
-    result.coord = cross_v3v3(sub_v3v3(two, one), sub_v3v3(three, one));
-    result.coord = one;
-    return result;
+void points_to_plane(vec3* one, vec3* two, vec3* three, plane result){
+    vec3 sub_one;
+    vec3 sub_two;
+    //sub one from two and one from three
+    sub_v3v3(two, one, sub_one);
+    sub_v3v3(three, one, sub_two);
+    //cross these results
+    cross_v3v3(&sub_one, &sub_two, *result.coord);
+    result.norm = one;
 }
 
-vec3 ray_isect_plane(ray r, plane pl){
+vec3 ray_isect_plane(ray* r, plane* pl){
     // ignoring parallelism here
     float epsilon = std::pow(10, -6);
-    float dot = std::abs(dot_v3v3(pl.norm, r.v));
+    float dot;
+    dot_v3v3(pl->norm, r->v, dot);
 
-    vec3 w = sub_v3v3(r.p, pl.coord);
-    float fac = -1 * dot_v3v3(pl.norm, w) / dot;
-    vec3 u = mul_v3fl(r.v, fac);
-    return add_v3v3(r.p, u);
+    vec3 w;
+    sub_v3v3(r->p, pl->coord, w);
+
+    float dot2;
+    vec3* temp_w = &w;
+    dot_v3v3(pl->norm, temp_w, dot2);
+    
+    float fac = -1.0 * dot2 / dot;
+    vec3 u;
+    mul_v3fl(r->v, fac, u);
+    vec3 add_result;
+    add_v3v3(r->p, &u, add_result);
+    return add_result;
 }
 float dist_v3v3(vec3 a, vec3 b){
-    return std::sqrt(std::pow((a.x-b.x),2) + std::pow((a.y-b.y),2) + std::pow((a.z - b.z), 2));
-}
+  return std::sqrt(std::pow((a.x-b.x),2) + std::pow((a.y-b.y),2) + std::pow((a.z - b.z), 2));
+e
 bool p_inside_tri(vec3 p, vec3 v1, vec3 v2, vec3 v3){
     float d1 = dist_v3v3(p, v1);
     float d2 = dist_v3v3(p, v2);
