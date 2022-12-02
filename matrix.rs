@@ -1,48 +1,48 @@
 #![allow(dead_code)]
 #[derive(Copy, Clone)]
     
-struct Vec3{
+pub struct Vec3{
     x: f32,
     y: f32,
     z: f32,
 }
 
-struct Vec4{
+pub struct Vec4{
     x: f32,
     y: f32,
     z: f32,
     w: f32,
 }
 
-struct V3Ray{
+pub struct V3Ray{
     point: Vec3,
     vert: Vec3,
 }
 
 
-struct Plane{
+pub struct Plane{
     coord: Vec3,
     norm: Vec3,
 }
 
-struct M3{
+pub struct M3{
     col1: Vec3,
     col2: Vec3,
     col3: Vec3,
 }
 
-struct M4{
-    col1: Vec3,
-    col2: Vec3,
-    col3: Vec3,
-    col4: Vec3,
+pub struct M4{
+    col1: Vec4,
+    col2: Vec4,
+    col3: Vec4,
+    col4: Vec4,
 }
 
-fn dot_v3v3(one: Vec3, two: Vec3) -> f32{
+pub fn dot_v3v3(one: Vec3, two: Vec3) -> f32{
     one.x * two.x + one.y * two.y + one.z + two.z
 }
 
-fn cross_v3v3(one: Vec3, two: Vec3) -> Vec3 {
+pub fn cross_v3v3(one: Vec3, two: Vec3) -> Vec3 {
     Vec3{
         x: one.y * two.z - one.z * two.y,
         y: one.x * two.z - one.z * two.x,
@@ -50,7 +50,7 @@ fn cross_v3v3(one: Vec3, two: Vec3) -> Vec3 {
     }
 }
 
-fn add_v3v3(one: Vec3, two: Vec3) -> Vec3 {
+pub fn add_v3v3(one: Vec3, two: Vec3) -> Vec3 {
     Vec3{
         x: one.x + two.x,
         y: one.y + two.y,
@@ -58,7 +58,7 @@ fn add_v3v3(one: Vec3, two: Vec3) -> Vec3 {
     }
 }
 
-fn sub_v3v3(one: Vec3, two: Vec3) -> Vec3 {
+pub fn sub_v3v3(one: Vec3, two: Vec3) -> Vec3 {
     Vec3{
         x: one.x - two.x,
         y: one.y - two.y,
@@ -66,7 +66,7 @@ fn sub_v3v3(one: Vec3, two: Vec3) -> Vec3 {
     }
 }  
 
-fn mul_v3fl(v: Vec3, f: f32) -> Vec3{
+pub fn mul_v3fl(v: Vec3, f: f32) -> Vec3{
     Vec3{
         x: v.x * f,
         y: v.y * f,
@@ -74,7 +74,7 @@ fn mul_v3fl(v: Vec3, f: f32) -> Vec3{
     }
 }
 
-fn points_to_plane(one: Vec3, two: Vec3, three: Vec3) -> Plane{
+pub fn points_to_plane(one: Vec3, two: Vec3, three: Vec3) -> Plane{
     let coord = cross_v3v3(sub_v3v3(two, one), sub_v3v3(three, one));
     Plane{
         coord: coord,
@@ -82,7 +82,7 @@ fn points_to_plane(one: Vec3, two: Vec3, three: Vec3) -> Plane{
     }
 }
 
-fn ray_isect_plane(r: V3Ray, pl: Plane) -> Vec3{
+pub fn ray_isect_plane(r: V3Ray, pl: Plane) -> Vec3{
     let dot = dot_v3v3(pl.norm, r.vert);
     let w = sub_v3v3(r.point, pl.coord);
     let dot2 = dot_v3v3(pl.norm, w);
@@ -91,11 +91,11 @@ fn ray_isect_plane(r: V3Ray, pl: Plane) -> Vec3{
     add_v3v3(r.point, u)
 }
 
-fn dist_v3v3(a: Vec3, b: Vec3) -> f32{
+pub fn dist_v3v3(a: Vec3, b: Vec3) -> f32{
    ((a.x-b.x).powf(2.0) + (a.y-b.y).powf(2.0) + (a.z-b.z).powf(2.0)).sqrt()
 }
 
-fn p_inside_tri(p: Vec3, v1: Vec3, v2: Vec3, v3: Vec3) -> bool{
+pub fn p_inside_tri(p: Vec3, v1: Vec3, v2: Vec3, v3: Vec3) -> bool{
     let d1 = dist_v3v3(p, v1);
     let d2 = dist_v3v3(p, v2);
     let d3 = dist_v3v3(p, v3);
@@ -103,7 +103,7 @@ fn p_inside_tri(p: Vec3, v1: Vec3, v2: Vec3, v3: Vec3) -> bool{
     d1 > 0 && d2 > 0 && d3 > 0 && d1 < total && d2 < total && d3 < total
 }
 
-fn m3m(one: M3, two: M3){
+pub fn m3m(one: M3, two: M3){
     let col1 = Vec3{
         x: one.col1.x * two.col1.x + one.col2.x * two.col1.y + one.col3.x * two.col1.z,
         y: one.col1.y * two.col1.x + one.col2.y * two.col1.y + one.col3.y * two.col1.z,
@@ -126,7 +126,7 @@ fn m3m(one: M3, two: M3){
     }   
 }   
 
-fn m4m(one: M4, two: m4){
+pub fn m4m(one: M4, two: M4){
     let col1 = Vec4{
         x: one.col1.x + two.col1.x + one.col2.x * two.col1.y + one.col3.x * two.col1.z + one.col4.x * two.col1.w,
         y: one.col1.y + two.col1.x + one.col2.y * two.col1.y + one.col3.y * two.col1.z + one.col4.y * two.col1.w,
