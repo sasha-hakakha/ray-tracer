@@ -1,17 +1,29 @@
 #![allow(dead_code)]
 #[derive(Copy, Clone)]
-    
+
+use ptr;
+
 pub struct Vec3{
-    x: f32,
-    y: f32,
-    z: f32,
+    x: Option<f32>,
+    y: Option<f32>,
+    z: Option<f32>,
+}
+
+impl Default for Vec3{
+    fn default() -> Vec3 {
+        Vec3{
+            x: None,
+            y: None,
+            z: None,
+        }
+    }
 }
 
 pub struct Vec4{
-    x: f32,
-    y: f32,
-    z: f32,
-    w: f32,
+    x: Option<f32>,
+    y: Option<f32>,
+    z: Option<f32>,
+    w: Option<f32>,
 }
 
 pub struct V3Ray{
