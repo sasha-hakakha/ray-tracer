@@ -1,0 +1,134 @@
+#![allow(dead_code)]
+#[derive(Copy, Clone)]
+    
+struct Vec3{
+    x: f32,
+    y: f32,
+    z: f32,
+}
+
+struct Vec4{
+    x: f32,
+    y: f32,
+    z: f32,
+    w: f32,
+}
+
+struct V3Ray{
+    point: Vec3,
+    vert: Vec3,
+}
+
+
+struct Plane{
+    coord: Vec3,
+    norm: Vec3,
+}
+
+struct M3{
+    col1: Vec3,
+    col2: Vec3,
+    col3: Vec3,
+}
+
+struct M4{
+    col1: Vec3,
+    col2: Vec3,
+    col3: Vec3,
+    col4: Vec3,
+}
+
+fn dot_v3v3(one: Vec3, two: Vec3) -> f32{
+    one.x * two.x + one.y * two.y + one.z + two.z
+}
+
+fn cross_v3v3(one: Vec3, two: Vec3) -> Vec3 {
+    Vec3{
+        x: one.y * two.z - one.z * two.y,
+        y: one.x * two.z - one.z * two.x,
+        z: one.x * two.y - one.y * two.x,
+    }
+}
+
+fn add_v3v3(one: Vec3, two: Vec3) -> Vec3 {
+    Vec3{
+        x: one.x + two.x,
+        y: one.y + two.y,
+        z: one.z + two.z,
+    }
+}
+
+fn sub_v3v3(one: Vec3, two: Vec3) -> Vec3 {
+    Vec3{
+        x: one.x - two.x,
+        y: one.y - two.y,
+        z: one.z - two.z,
+    }
+}  
+
+fn mul_v3fl(v: Vec3, f: f32) -> Vec3{
+    Vec3{
+        x: v.x * f,
+        y: v.y * f,
+        z: v.z * f,
+    }
+}
+
+fn points_to_plane(one: Vec3, two: Vec3, three: Vec3) -> Plane{
+    let coord = cross_v3v3(sub_v3v3(two, one), sub_v3v3(three, one));
+    Plane{
+        coord: coord,
+        norm: one,
+    }
+}
+
+fn ray_isect_plane(r: V3Ray, pl: Plane) -> Vec3{
+    let dot = dot_v3v3(pl.norm, r.vert);
+    let w = sub_v3v3(r.point, pl.coord);
+    let dot2 = dot_v3v3(pl.norm, w);
+    let fac = -1.0 * dot2 / dot;
+    let u = mul_v3fl(r.vert, fac);
+    add_v3v3(r.point, u)
+}
+
+fn dist_v3v3(a: Vec3, b: Vec3) -> f32{
+   ((a.x-b.x).powf(2.0) + (a.y-b.y).powf(2.0) + (a.z-b.z).powf(2.0)).sqrt()
+}
+
+fn p_inside_tri(p: Vec3, v1: Vec3, v2: Vec3, v3: Vec3) -> bool{
+    let d1 = dist_v3v3(p, v1);
+    let d2 = dist_v3v3(p, v2);
+    let d3 = dist_v3v3(p, v3);
+    let total = d1 + d2 + d3;
+    d1 > 0 && d2 > 0 && d3 > 0 && d1 < total && d2 < total && d3 < total
+}
+
+fn m3m(one: M3, two: M3){
+    let col1 = Vec3{
+        x: one.col1.x * two.col1.x + one.col2.x * two.col1.y + one.col3.x + two.col1.z,
+        y: one.col1.y + two.col1.x + one.col2.y + two.col1.y + one.col3.y + two.col1.z,
+        z: one.col1.z + two.col1.x + one.col2.z + two.col1.y + one.col3.z + two.col1.z,
+    }
+    let col2 = Vec3{
+        x: one.col1.x * two.col2.x + one.col2.x * two.col2.y + one.col3.x + two.col2.z,
+        y: one.col1.y + two.col2.x + one.col2.y + two.col2.y + one.col3.y + two.col2.z,
+        z: one.col1.z + two.col2.x + one.col2.z + two.col2.y + one.col3.z + two.col2.z,
+    }
+    let col3 = Vec3{
+        x: one.col1.x * two.col3.x + one.col2.x * two.col3.y + one.col3.x + two.col3.z,
+        y: one.col1.y + two.col3.x + one.col2.y + two.col3.y + one.col3.y + two.col3.z,
+        z: one.col1.z + two.col3.x + one.col2.z + two.col3.y + one.col3.z + two.col3.z,
+    }
+    M3{
+        col1: col1,
+        col2: col2,
+        col3: col3,
+    }   
+}   
+
+fn m4m(one: M4, two: m4){
+
+}   
+fn main(){
+    println!("done!");
+}

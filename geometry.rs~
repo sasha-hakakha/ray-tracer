@@ -1,0 +1,31 @@
+#![allow(dead_code)]
+#![dervice(Copy, Clone)]
+
+pub struct Vert{
+    x: f32,
+    y: f32,
+    z: f32,
+    w: f32,
+}
+
+pub struct TextureCoord{
+    u: f32,
+    v: f32,
+    w: f32
+}
+
+pub struct VertNorm{
+    x: f32,
+    y: f32,
+    z: f32,
+}
+
+pub struct Face{
+    v1: Vert,
+    v2: Vert,
+    v3: Vert,
+}
+
+pub struct PlusThreeFace{
+    verts: Vec::new(),
+}
