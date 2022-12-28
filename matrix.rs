@@ -2,7 +2,7 @@
 #![allow(dead_code)]
 // extern crate alloc;
 // use alloc::vec::Vec;
-#[derive(Debug, Clone)]
+#[derive(Debug, Copy, Clone)]
 pub struct Vert {
     coords: [f32; 4],
 }
@@ -12,9 +12,9 @@ pub struct Plane {
 }
 
 pub struct M3 {
-    col1: Vert,
-    col2: Vert,
-    col3: Vert,
+    pub col1: Vert,
+    pub col2: Vert,
+    pub col3: Vert,
 }
 
 pub struct M4 {
@@ -40,12 +40,10 @@ pub struct SpaceVert {
     coords: Vert,
 }
 
-// pub struct Face3{
-//     verts: matrix::M3,
-// }
-
 pub struct Face3 {
     verts: M3,
+    normals: Option<M3>,
+    texture_coords: Option<M3>,
 }
 
 pub fn dot_v3v3(one: &[f32; 4], two: &[f32; 4]) -> f32 {
