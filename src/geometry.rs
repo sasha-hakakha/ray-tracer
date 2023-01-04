@@ -83,6 +83,73 @@ pub fn process_lines(lines: io::Lines<io::BufReader<File>>) -> OBJ{
         let line_str = line.unwrap();
         let mut split_line = line_str.split(" ");
         let split_vec = split_line.collect::<Vec<&str>>();
+        let len = split_vec.length();
+        if (splic_vec[0] == "v"){
+            if (len < 4){
+                panic!("too few args for vert!");
+            }
+            else if (len > 5){
+                panic!("too many args for vert!")
+            }
+            else if(len == 4){
+                geo_verts.push(matrix::Vert{
+                    coords:[
+                        split_vec[1].parse::<f32>.unwrap(),
+                        split_vec[2].parse::<f32>.unwrap(),
+                        split_vec[3].parse::<f32>.unwrap(),
+                        -1.0
+                    ]
+                });
+            }
+            else{
+                geo_verts.push(matrix::Vert{
+                    coords:[
+                        split_vec[1].parse::<f32>.unwrap(),
+                        split_vec[2].parse::<f32>.unwrap(),
+                        split_vec[3].parse::<f32>.unwrap(),
+                        split_vec[4].parse::<f32>.unwrap(),
+                    ]
+                });
+            }
+        }
+        if(split_vec[0] == "vt"){
+            if(len < 2){
+                panic!("too few arguments for texture coord")
+            }
+            else if(len > 4){
+                panic!("too many arguments for texture coord")
+            }
+            else if(len == 2){
+                texture_coords.push(matrix::Vert{
+                    coords:[
+                        split_vec[1].parse::<f32>.unwrap(),
+                        -1.0,
+                        -1.0,
+                        -1.0,
+                    ]
+                })
+            }
+            else if(len == 3){
+                texture_coords.push(matrix::Vert{
+                    coords:[
+                        split_vec[1].parse::<f32>.unwrap(),
+                        split_vec[2].parse::<f32>.unwrap(),
+                        -1.0,
+                        -1.0,
+                    ]
+                })
+            }
+            else if(len == 3){
+                texture_coords.push(matrix::Vert{
+                    coords:[
+                        split_vec[1].parse::<f32>.unwrap(),
+                        split_vec[2].parse::<f32>.unwrap(),
+                        split_vec[3].parse::<f32>.unwrap(),
+                        -1.0,
+                    ]
+                })
+            }
+        }
         
     }
     OBJ{

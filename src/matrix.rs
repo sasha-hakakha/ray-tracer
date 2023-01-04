@@ -18,32 +18,32 @@ pub struct M3 {
 }
 
 pub struct M4 {
-    col1: Vert,
-    col2: Vert,
-    col3: Vert,
-    col4: Vert,
+    pub col1: Vert,
+    pub col2: Vert,
+    pub col3: Vert,
+    pub col4: Vert,
 }
 pub struct Ray {
-    point: Vert,
-    vert: Vert,
+    pub point: Vert,
+    pub vert: Vert,
 }
 
 pub struct TextureCoord {
-    coords: Vert,
+    pub coords: Vert,
 }
 
 pub struct VertNorm {
-    coords: Vert,
+    pub coords: Vert,
 }
 
 pub struct SpaceVert {
-    coords: Vert,
+    pub coords: Vert,
 }
 
 pub struct Face3 {
-    verts: M3,
-    normals: Option<M3>,
-    texture_coords: Option<M3>,
+    pub verts: M3,
+    pub normals: Option<M3>,
+    pub texture_coords: Option<M3>,
 }
 
 pub fn dot_v3v3(one: &[f32; 4], two: &[f32; 4]) -> f32 {
