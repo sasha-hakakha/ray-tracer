@@ -79,8 +79,11 @@ pub fn process_lines(lines: io::Lines<io::BufReader<File>>) -> OBJ{
     let vert_norms: Vec<matrix::Vert> = vec![];
     let texture_coords: Vec<matrix::Vert> = vec![];
     let faces: Vec<matrix::Face3> = vec![];
-    for line in lines[
-
+    for line in lines{
+        let line_str = line.unwrap();
+        let mut split_line = line_str.split(" ");
+        let split_vec = split_line.collect::<Vec<&str>>();
+        
     }
     OBJ{
         geo_verts: geo_verts,
